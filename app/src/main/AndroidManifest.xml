@@ -13,7 +13,7 @@
         android:theme="@style/Theme.DoSoptTemplate"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".MyPageFragment"
             android:exported="false" />
 
         <activity
@@ -28,6 +28,10 @@
 
         <activity
             android:name=".SignUpActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".HomeActivity"
             android:exported="false" />
     </application>
 
