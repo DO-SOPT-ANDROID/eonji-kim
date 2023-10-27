@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MyPageFragment">
 
     <TextView
-        android:id="@+id/welcomeText"
+        android:id="@+id/tv_welcome_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/idText"
+        android:id="@+id/tv_login_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -26,21 +26,21 @@
         android:text="@string/main_id"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/welcomeText" />
+        app:layout_constraintTop_toBottomOf="@id/tv_welcome_text" />
 
     <EditText
-        android:id="@+id/idEdit"
+        android:id="@+id/et_login_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="10dp"
-        android:hint="@string/main_id_value"
+        android:hint="@string/sign_up_id_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/idText" />
+        app:layout_constraintTop_toBottomOf="@id/tv_login_id" />
 
     <TextView
-        android:id="@+id/pwText"
+        android:id="@+id/tv_login_pw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -48,31 +48,31 @@
         android:text="@string/main_pw"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/idEdit" />
+        app:layout_constraintTop_toBottomOf="@id/et_login_id" />
 
     <EditText
-        android:id="@+id/pwEdit"
+        android:id="@+id/et_login_pw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="10dp"
-        android:hint="@string/main_pw_value"
+        android:hint="@string/sign_up_pw_hint"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pwText" />
+        app:layout_constraintTop_toBottomOf="@id/tv_login_pw" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/btn_login_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:layout_marginBottom="10dp"
         android:text="@string/main_login"
-        app:layout_constraintBottom_toTopOf="@id/signButton" />
+        app:layout_constraintBottom_toTopOf="@id/btn_login_sign_up" />
 
     <Button
-        android:id="@+id/signButton"
+        android:id="@+id/btn_login_sign_up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
