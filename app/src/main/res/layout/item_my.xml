@@ -11,11 +11,13 @@
         android:layout_height="0dp"
         android:layout_marginVertical="15dp"
         android:layout_marginStart="25dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/kakao_profile_sky"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize40Percent" />
 
     <TextView
         android:id="@+id/tv_item_my_name"
