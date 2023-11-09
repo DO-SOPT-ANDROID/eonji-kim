@@ -5,5 +5,10 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <!-- ImageView Style -->
+    <style name="ShapeAppearanceOverlay.App.CornerSize40Percent" parent="" >
+        <item name="cornerSize">40%</item>
+    </style>
+
     <style name="Theme.DoSoptTemplate" parent="Base.Theme.DoSoptTemplate" />
 </resources>

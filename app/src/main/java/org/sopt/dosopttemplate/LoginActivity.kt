@@ -47,18 +47,18 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun initSignBtnClickListener() {
-        binding.signButton.setOnClickListener {
+        binding.btnLoginSignUp.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             resultLauncher.launch(intent)
         }
     }
 
     fun initLoginBtnClickListener() {
-        binding.loginButton.setOnClickListener {
-            if (binding.idEdit.text.toString() == id && binding.pwEdit.text.toString() == pw
+        binding.btnLoginLogin.setOnClickListener {
+            if (binding.etLoginId.text.toString() == id && binding.etLoginPw.text.toString() == pw
             ) {
                 makeToast("로그인에 성공했습니다!")
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, HomeActivity::class.java)
                 intent.putExtra("idValue", id)
                 intent.putExtra("pwValue", pw)
                 intent.putExtra("nameValue", name)

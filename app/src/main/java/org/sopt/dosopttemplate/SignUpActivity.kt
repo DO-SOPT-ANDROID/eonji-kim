@@ -18,17 +18,17 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     fun initSignBtnClickListener() {
-        binding.signButton.setOnClickListener {
-            if (binding.idEdit.text.isNullOrBlank() || binding.pwEdit.text.isNullOrBlank() || binding.nameEdit.text.isNullOrBlank() || binding.mbtiEdit.text.isNullOrBlank()) {
+        binding.btnSignUpSignUp.setOnClickListener {
+            if (binding.etSignUpId.text.isNullOrBlank() || binding.etSignUpPw.text.isNullOrBlank() || binding.etSignUpName.text.isNullOrBlank() || binding.etSignUpMbti.text.isNullOrBlank()) {
                 makeSnackbar("모든 정보를 입력해 주세요.")
-            } else if (binding.idEdit.text.toString().length in 6..10 && binding.pwEdit.text.toString().length >= 8 && binding.pwEdit.text.toString().length <= 12 && binding.nameEdit.text.toString()
-                    .trim().isNotEmpty() && binding.mbtiEdit.text.toString().length == 4
+            } else if (binding.etSignUpId.text.toString().length in 6..10 && binding.etSignUpPw.text.toString().length >= 8 && binding.etSignUpPw.text.toString().length <= 12 && binding.etSignUpName.text.toString()
+                    .trim().isNotEmpty() && binding.etSignUpMbti.text.toString().length == 4
             ) {
                 val intent = Intent(this, LoginActivity::class.java)
-                intent.putExtra("idValue", binding.idEdit.text.toString())
-                intent.putExtra("pwValue", binding.pwEdit.text.toString())
-                intent.putExtra("nameValue", binding.nameEdit.text.toString())
-                intent.putExtra("mbtiValue", binding.mbtiEdit.text.toString())
+                intent.putExtra("idValue", binding.etSignUpId.text.toString())
+                intent.putExtra("pwValue", binding.etSignUpPw.text.toString())
+                intent.putExtra("nameValue", binding.etSignUpName.text.toString())
+                intent.putExtra("mbtiValue", binding.etSignUpMbti.text.toString())
                 setResult(RESULT_OK, intent)
                 finish()
             } else {
