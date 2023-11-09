@@ -33,6 +33,6 @@ class MyViewHolder(private val binding: ItemMyBinding) :
     fun onBind(my: My) {
         binding.ivItemMyImage.setImageResource(my.profileImage)
         binding.tvItemMyName.text = my.name
-        binding.tvItemMyMessage.text = my.self_description
+        binding.tvItemMyMessage.text = my.selfDescription
     }
 }

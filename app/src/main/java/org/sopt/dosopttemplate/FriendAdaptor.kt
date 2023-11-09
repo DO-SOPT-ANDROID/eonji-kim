@@ -34,6 +34,6 @@ class FriendViewHolder(private val binding: ItemFriendBinding) :
     fun onBind(friend: Friend) {
         binding.ivItemImage.setImageResource(friend.profileImage)
         binding.tvItemName.text = friend.name
-        binding.tvItemMessage.text = friend.self_description
+        binding.tvItemMessage.text = friend.selfDescription
     }
 }
