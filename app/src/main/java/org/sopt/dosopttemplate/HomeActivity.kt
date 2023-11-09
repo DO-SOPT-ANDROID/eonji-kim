@@ -16,11 +16,16 @@ class HomeActivity : AppCompatActivity() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fcv_home)
         if (currentFragment == null) {  // 없으면 걍 직접 끼워넣는다!
             supportFragmentManager.beginTransaction()
-                .add(R.id.fcv_home, HomeFragment())
+                .add(R.id.fcv_home, HomeFragment.newInstance())
                 .commit()
         }
 
+        setBaseSelect()
         clickBottomNavigation()
+    }
+
+    private fun setBaseSelect() {
+        binding.bnvHome.selectedItemId = R.id.menu_home
     }
 
     private fun clickBottomNavigation() {
@@ -44,10 +49,9 @@ class HomeActivity : AppCompatActivity() {
                 else -> false
             }
         }
-        binding.bnvHome.selectedItemId = R.id.menu_home
     }
 
-    private fun receiveLogin(): MyPageFragment {
+    private fun receiveLogin(): Fragment {
         val idValue = intent.getStringExtra("idValue")
         val nameValue = intent.getStringExtra("nameValue")
         val mbtiValue = intent.getStringExtra("mbtiValue")

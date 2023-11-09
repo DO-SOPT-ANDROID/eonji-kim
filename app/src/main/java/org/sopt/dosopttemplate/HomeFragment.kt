@@ -9,6 +9,12 @@ import androidx.recyclerview.widget.ConcatAdapter
 import org.sopt.dosopttemplate.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
+    companion object {
+        fun newInstance(): HomeFragment {
+            return HomeFragment()
+        }
+    }
+
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding
         get() = requireNotNull(_binding) { "바인딩 객체가 생성되지 않았다. 생성하고 불러라 임마!" }
@@ -30,6 +36,10 @@ class HomeFragment : Fragment() {
         // 대부분의 로직은 여기에 구현합니다.
         // 원두를 갈고~
         // 커피를 내리고~
+        connectAdapter()
+    }
+
+    private fun connectAdapter() {
         val myAdapter = MyAdaptor(requireContext())
         val friendAdapter = FriendAdaptor(requireContext())
 
@@ -40,7 +50,6 @@ class HomeFragment : Fragment() {
         myAdapter.setMyList(mockmyList)
         friendAdapter.setFriendList(mockFriendList)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
