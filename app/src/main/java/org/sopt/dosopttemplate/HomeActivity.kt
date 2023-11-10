@@ -55,6 +55,7 @@ class HomeActivity : AppCompatActivity() {
         val idValue = intent.getStringExtra("idValue")
         val nameValue = intent.getStringExtra("nameValue")
         val mbtiValue = intent.getStringExtra("mbtiValue")
+        val birthValue = intent.getStringExtra("birthValue")
 
         val myPageFragment = MyPageFragment()
         val bundle = Bundle()
@@ -62,6 +63,7 @@ class HomeActivity : AppCompatActivity() {
         bundle.putString("idValue", idValue)
         bundle.putString("nameValue", nameValue)
         bundle.putString("mbtiValue", mbtiValue)
+        bundle.putString("birthValue", birthValue)
 
         myPageFragment.arguments = bundle
         return myPageFragment

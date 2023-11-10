@@ -27,6 +27,7 @@ class MyPageFragment : Fragment() {
         binding.tvProfileIdValue.text = arguments?.getString("idValue")
         binding.tvProfileNameValue.text = arguments?.getString("nameValue")
         binding.tvProfileMbtiValue.text = arguments?.getString("mbtiValue")
+        binding.tvProfileBirthValue.text = arguments?.getString("birthValue")
     }
 
     override fun onDestroyView() {
