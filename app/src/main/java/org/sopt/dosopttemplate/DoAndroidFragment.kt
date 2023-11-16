@@ -31,6 +31,12 @@ class DoAndroidFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // 대부분의 로직은 여기에 구현한다.
+        val viewPager = connectAdapter()
+
+        addSpacing(viewPager)
+    }
+
+    private fun connectAdapter(): ViewPager2 {
         val demoData = arrayListOf(
             "Android",
             "ios",
@@ -45,8 +51,7 @@ class DoAndroidFragment : Fragment() {
         val adapter = CarouseIRVAdapter(demoData)
         viewClickListener(adapter)
         viewPager.adapter = adapter
-
-        addSpacing(viewPager)
+        return viewPager
     }
 
     private fun addSpacing(viewPager: ViewPager2) {
