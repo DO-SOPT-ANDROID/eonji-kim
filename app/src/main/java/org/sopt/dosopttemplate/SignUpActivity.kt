@@ -13,12 +13,6 @@ class SignUpActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
 
-    // calendar
-    private var calendar = Calendar.getInstance()
-    private var year = calendar.get(Calendar.YEAR)
-    private var month = calendar.get(Calendar.MONTH)
-    private var day = calendar.get(Calendar.DAY_OF_MONTH)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
@@ -31,6 +25,12 @@ class SignUpActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     fun dateBtnClickListener() {
         binding.ivSignUpDateBtn.setOnClickListener {
+            // calendar
+            var calendar = Calendar.getInstance()
+            var year = calendar.get(Calendar.YEAR)
+            var month = calendar.get(Calendar.MONTH)
+            var day = calendar.get(Calendar.DAY_OF_MONTH)
+
             val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
                 binding.tvSignUpDate.text =
                     year.toString() + "/" + (month + 1).toString() + "/" + day.toString()
