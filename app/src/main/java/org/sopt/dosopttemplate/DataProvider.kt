@@ -29,11 +29,6 @@ object DataProvider {
                 selfDescription = "",
             ),
             Friend(
-                profileImage = R.drawable.kakao_profile_sky,
-                name = "SOPT YB 김민우",
-                selfDescription = "나는 김민우",
-            ),
-            Friend(
                 profileImage = R.drawable.kakao_profile_indigo,
                 name = "SOPT YB 김민정",
                 selfDescription = "나는 김민정",

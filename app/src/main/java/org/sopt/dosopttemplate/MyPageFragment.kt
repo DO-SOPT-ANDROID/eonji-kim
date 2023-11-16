@@ -16,19 +16,18 @@ class MyPageFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View { // 이제 반환하는 View가 Null일 수 없기 때문에, ?를 지워주셔도 됩니다.
+    ): View {
         _binding = FragmentMyPageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // 대부분의 로직은 여기에 구현합니다.
-        // 원두를 갈고~
-        // 커피를 내리고~
+        // 대부분의 로직은 여기에 구현한다.
         binding.tvProfileIdValue.text = arguments?.getString("idValue")
         binding.tvProfileNameValue.text = arguments?.getString("nameValue")
         binding.tvProfileMbtiValue.text = arguments?.getString("mbtiValue")
+        binding.tvProfileBirthValue.text = arguments?.getString("birthValue")
     }
 
     override fun onDestroyView() {

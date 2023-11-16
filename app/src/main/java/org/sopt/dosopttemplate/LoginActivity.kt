@@ -19,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
     private var pw: String? = null
     private var name: String? = null
     private var mbti: String? = null
+    private var birth: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
                 pw = result.data?.getStringExtra("pwValue") ?: ""
                 name = result.data?.getStringExtra("nameValue") ?: ""
                 mbti = result.data?.getStringExtra("mbtiValue")?.uppercase(Locale.ROOT) ?: ""
+                birth = result.data?.getStringExtra("birthValue") ?: ""
                 makeSnackbar("회원가입에 성공하였습니다!")
             }
         }
@@ -63,6 +65,7 @@ class LoginActivity : AppCompatActivity() {
                 intent.putExtra("pwValue", pw)
                 intent.putExtra("nameValue", name)
                 intent.putExtra("mbtiValue", mbti)
+                intent.putExtra("birthValue", birth)
                 startActivity(intent)
             } else {
                 makeToast("로그인에 실패했습니다.")
