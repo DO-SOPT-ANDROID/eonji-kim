@@ -30,7 +30,6 @@ class SignUpActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     fun dateBtnClickListener() {
         binding.ivSignUpDateBtn.setOnClickListener {
-            // calendar
             var calendar = Calendar.getInstance()
             var year = calendar.get(Calendar.YEAR)
             var month = calendar.get(Calendar.MONTH)
@@ -75,8 +74,7 @@ class SignUpActivity : AppCompatActivity() {
                                 intent.putExtra("pwValue", signUpPw)
                                 setResult(RESULT_OK, intent)
                                 finish()
-                            }
-                            else {
+                            } else {
                                 makeToast("회원가입에 실패했습니다. ${response.errorBody()?.string()}")
                             }
                         }
@@ -85,16 +83,6 @@ class SignUpActivity : AppCompatActivity() {
                             makeToast("서버 에러 발생")
                         }
                     })
-                /*
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.putExtra("idValue", binding.etSignUpId.text.toString())
-                intent.putExtra("pwValue", binding.etSignUpPw.text.toString())
-                intent.putExtra("nameValue", binding.etSignUpName.text.toString())
-                intent.putExtra("mbtiValue", binding.etSignUpMbti.text.toString())
-                intent.putExtra("birthValue", binding.tvSignUpDate.text.toString())
-                setResult(RESULT_OK, intent)
-                finish()
-                 */
             } else {
                 makeSnackbar("입력 정보를 다시 확인해 주세요.")
             }

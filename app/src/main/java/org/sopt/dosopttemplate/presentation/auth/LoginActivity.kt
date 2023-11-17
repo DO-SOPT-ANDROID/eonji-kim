@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)    // equal findViewById()
+        setContentView(binding.root)
 
         setResult()
 
@@ -88,8 +88,7 @@ class LoginActivity : AppCompatActivity() {
                             intent.putExtra("nickNameValue", userNickname)
 
                             startActivity(intent)
-                        }
-                        else {
+                        } else {
                             makeToast("로그인에 실패했습니다.")
                         }
                     }
@@ -98,22 +97,6 @@ class LoginActivity : AppCompatActivity() {
                         makeToast("서버 에러 발생")
                     }
                 })
-
-            /*
-            if (binding.etLoginId.text.toString() == id && binding.etLoginPw.text.toString() == pw
-            ) {
-                makeToast("로그인에 성공했습니다!")
-                val intent = Intent(this, HomeActivity::class.java)
-                intent.putExtra("idValue", id)
-                intent.putExtra("pwValue", pw)
-                intent.putExtra("nameValue", name)
-                intent.putExtra("mbtiValue", mbti)
-                intent.putExtra("birthValue", birth)
-                startActivity(intent)
-            } else {
-                makeToast("로그인에 실패했습니다.")
-            }
-             */
         }
     }
 
