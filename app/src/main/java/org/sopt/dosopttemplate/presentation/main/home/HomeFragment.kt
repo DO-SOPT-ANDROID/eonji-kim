@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import org.sopt.dosopttemplate.data.adaptor.FriendAdaptor
+import org.sopt.dosopttemplate.data.adaptor.UserAdaptor
 import org.sopt.dosopttemplate.databinding.FragmentHomeBinding
 import org.sopt.dosopttemplate.server.ServicePool.userService
 import org.sopt.dosopttemplate.server.auth.response.ResponseUserListDto
@@ -25,6 +26,8 @@ class HomeFragment : Fragment() {
     private val binding: FragmentHomeBinding
         get() = requireNotNull(_binding) { "바인딩 객체가 생성되지 않았다. 생성하고 불러라 임마!" }
 
+    private lateinit var userAdapter : UserAdaptor
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,23 +40,15 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // 대부분의 로직은 여기에 구현한다.
-        // connectAdapter()
+        connectAdapter()
         getUserList()
     }
 
-    /*
     private fun connectAdapter() {
-        val myAdapter = MyAdaptor(requireContext())
-        val friendAdapter = FriendAdaptor(requireContext())
+        userAdapter = UserAdaptor(requireContext())
 
-        val concatAdaptor = ConcatAdapter(myAdapter, friendAdapter)
-
-        binding.rcvHomeMain.adapter = concatAdaptor
-
-        myAdapter.setMyList(mockmyList)
-        friendAdapter.setFriendList(mockFriendList)
+        binding.rcvHomeMain.adapter = userAdapter
     }
-     */
 
     private fun getUserList() {
         userService.getUserList()
@@ -64,7 +59,11 @@ class HomeFragment : Fragment() {
                 ) {
                     if (response.isSuccessful) {
                         val userList = response.body()?.data
-                        Log.e("서버 통신", "성공")
+                        if (userList != null) {
+                            Log.e("서버 통신", "성공")
+
+                            userAdapter.setUserList(userList)
+                        }
 
                     }
                 }
