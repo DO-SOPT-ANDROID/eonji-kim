@@ -1,4 +1,4 @@
-package org.sopt.dosopttemplate
+package org.sopt.dosopttemplate.presentation.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import org.sopt.dosopttemplate.databinding.ActivityLoginBinding
-import java.util.Locale
+import org.sopt.dosopttemplate.presentation.main.HomeActivity
+import org.sopt.dosopttemplate.server.ServicePool.authService
+import org.sopt.dosopttemplate.server.auth.request.RequestLoginDto
+import org.sopt.dosopttemplate.server.auth.response.ResponseLoginDto
+import retrofit2.Call
+import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
@@ -17,9 +22,11 @@ class LoginActivity : AppCompatActivity() {
 
     private var id: String? = null
     private var pw: String? = null
+    /*
     private var name: String? = null
     private var mbti: String? = null
     private var birth: String? = null
+     */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +35,8 @@ class LoginActivity : AppCompatActivity() {
 
         setResult()
 
-        initSignBtnClickListener()
-        initLoginBtnClickListener()
+        signBtnClickListener()
+        loginBtnClickListener()
     }
 
     private fun setResult() {
@@ -40,23 +47,59 @@ class LoginActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 id = result.data?.getStringExtra("idValue") ?: ""
                 pw = result.data?.getStringExtra("pwValue") ?: ""
-                name = result.data?.getStringExtra("nameValue") ?: ""
-                mbti = result.data?.getStringExtra("mbtiValue")?.uppercase(Locale.ROOT) ?: ""
-                birth = result.data?.getStringExtra("birthValue") ?: ""
+                // name = result.data?.getStringExtra("nameValue") ?: ""
+                // mbti = result.data?.getStringExtra("mbtiValue")?.uppercase(Locale.ROOT) ?: ""
+                // birth = result.data?.getStringExtra("birthValue") ?: ""
                 makeSnackbar("회원가입에 성공하였습니다!")
             }
         }
     }
 
-    fun initSignBtnClickListener() {
+    fun signBtnClickListener() {
         binding.btnLoginSignUp.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
+            // startActivity(intent)
             resultLauncher.launch(intent)
         }
     }
 
-    fun initLoginBtnClickListener() {
+    fun loginBtnClickListener() {
         binding.btnLoginLogin.setOnClickListener {
+            val loginId = binding.etLoginId.text.toString()
+            val loginPw = binding.etLoginPw.text.toString()
+
+            authService.login(RequestLoginDto(loginId, loginPw))
+                .enqueue(object : retrofit2.Callback<ResponseLoginDto> {
+                    override fun onResponse(
+                        call: Call<ResponseLoginDto>,
+                        response: Response<ResponseLoginDto>
+                    ) {
+                        if (response.isSuccessful) {
+                            val data: ResponseLoginDto = response.body()!!
+                            val userId = data.id
+                            val userName = data.username
+                            val userNickname = data.nickname
+
+                            makeToast("로그인을 성공하였고 유저의 ID는 $userId 입니다")
+
+                            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                            intent.putExtra("idValue", userId)
+                            intent.putExtra("nameValue", userName)
+                            intent.putExtra("nickNameValue", userNickname)
+
+                            startActivity(intent)
+                        }
+                        else {
+                            makeToast("로그인에 실패했습니다.")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseLoginDto>, t: Throwable) {
+                        makeToast("서버 에러 발생")
+                    }
+                })
+
+            /*
             if (binding.etLoginId.text.toString() == id && binding.etLoginPw.text.toString() == pw
             ) {
                 makeToast("로그인에 성공했습니다!")
@@ -70,6 +113,7 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 makeToast("로그인에 실패했습니다.")
             }
+             */
         }
     }
 

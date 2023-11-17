@@ -1,4 +1,4 @@
-package org.sopt.dosopttemplate
+package org.sopt.dosopttemplate.presentation.main.mypage
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,10 +24,9 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // 대부분의 로직은 여기에 구현한다.
-        binding.tvProfileIdValue.text = arguments?.getString("idValue")
+        binding.tvProfileIdValue.text = arguments?.getInt("idValue", 0).toString()
         binding.tvProfileNameValue.text = arguments?.getString("nameValue")
-        binding.tvProfileMbtiValue.text = arguments?.getString("mbtiValue")
-        binding.tvProfileBirthValue.text = arguments?.getString("birthValue")
+        binding.tvProfileNicknameValue.text = arguments?.getString("nickNameValue")
     }
 
     override fun onDestroyView() {
