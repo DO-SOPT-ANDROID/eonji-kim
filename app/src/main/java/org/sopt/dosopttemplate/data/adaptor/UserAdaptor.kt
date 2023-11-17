@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import org.sopt.dosopttemplate.data.Friend
 import org.sopt.dosopttemplate.databinding.ItemFriendBinding
 import org.sopt.dosopttemplate.server.auth.response.ResponseUserListDataDto
@@ -33,8 +34,11 @@ class UserAdaptor(context: Context) : RecyclerView.Adapter<UserViewHolder>() {
 
 class UserViewHolder(private val binding: ItemFriendBinding) :
     RecyclerView.ViewHolder(binding.root) {
+    private val context: Context = binding.root.context
     fun onBind(user: ResponseUserListDataDto) {
-        // binding.ivItemImage.setImageResource(user.avatar)
+        Glide.with(context)
+            .load(user.avatar).into(binding.ivItemImage)
+
         binding.tvItemName.text = user.first_name
         binding.tvItemMessage.text = user.email
     }
