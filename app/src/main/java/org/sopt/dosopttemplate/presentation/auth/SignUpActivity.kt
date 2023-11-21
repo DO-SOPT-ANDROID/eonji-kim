@@ -4,12 +4,12 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import org.sopt.dosopttemplate.databinding.ActivitySignUpBinding
 import org.sopt.dosopttemplate.server.ServicePool.authService
 import org.sopt.dosopttemplate.server.auth.request.RequestSignUpDto
+import org.sopt.dosopttemplate.util.makeSnackbar
+import org.sopt.dosopttemplate.util.makeToast
 import retrofit2.Call
 import retrofit2.Response
 import java.util.Calendar
@@ -24,11 +24,11 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         dateBtnClickListener()
-        signBtnClickListener()
+        signUpBtnClickListener()
     }
 
     @SuppressLint("SetTextI18n")
-    fun dateBtnClickListener() {
+    private fun dateBtnClickListener() {
         binding.ivSignUpDateBtn.setOnClickListener {
             var calendar = Calendar.getInstance()
             var year = calendar.get(Calendar.YEAR)
@@ -43,7 +43,7 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    fun signBtnClickListener() {
+    private fun signUpBtnClickListener() {
         binding.btnSignUpSignUp.setOnClickListener {
             val signUpName = binding.etSignUpId.text.toString()
             val signUpNickname = binding.etSignUpName.text.toString()
@@ -52,7 +52,7 @@ class SignUpActivity : AppCompatActivity() {
             val signUpBirth = binding.tvSignUpDate.text.toString()
 
             if (signUpName.isEmpty() || signUpPw.isEmpty() || signUpNickname.isEmpty() || signUpMbti.isEmpty() || signUpBirth.isEmpty()) {
-                makeSnackbar("모든 정보를 입력해 주세요.")
+                binding.root.makeSnackbar("모든 정보를 입력해 주세요.")
             } else if (signUpName.length in 6..10 && signUpPw.length in 8..12 && signUpNickname.trim()
                     .isNotEmpty() && signUpMbti.length == 4
             ) {
@@ -75,25 +75,21 @@ class SignUpActivity : AppCompatActivity() {
                                 setResult(RESULT_OK, intent)
                                 finish()
                             } else {
-                                makeToast("회원가입에 실패했습니다. ${response.errorBody()?.string()}")
+                                binding.root.makeToast(
+                                    "회원가입에 실패했습니다. ${
+                                        response.errorBody()?.string()
+                                    }"
+                                )
                             }
                         }
 
                         override fun onFailure(call: Call<Unit>, t: Throwable) {
-                            makeToast("서버 에러 발생")
+                            binding.root.makeToast("서버 에러 발생")
                         }
                     })
             } else {
-                makeSnackbar("입력 정보를 다시 확인해 주세요.")
+                binding.root.makeSnackbar("입력 정보를 다시 확인해 주세요.")
             }
         }
-    }
-
-    fun makeSnackbar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
-    }
-
-    fun makeToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
