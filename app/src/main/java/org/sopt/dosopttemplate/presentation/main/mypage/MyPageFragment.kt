@@ -10,7 +10,7 @@ import org.sopt.dosopttemplate.databinding.FragmentMyPageBinding
 class MyPageFragment : Fragment() {
     private var _binding: FragmentMyPageBinding? = null
     private val binding: FragmentMyPageBinding
-        get() = requireNotNull(_binding) { "바인딩 객체가 생성되지 않았다. 생성하고 불러라 임마!" }
+        get() = requireNotNull(_binding) { "바인딩 객체가 생성되지 않았습니다." }
 
     override fun onCreateView(
         inflater: LayoutInflater,
