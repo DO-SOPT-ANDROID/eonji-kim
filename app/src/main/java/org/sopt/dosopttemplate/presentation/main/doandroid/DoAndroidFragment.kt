@@ -17,7 +17,7 @@ import kotlin.math.abs
 class DoAndroidFragment : Fragment() {
     private var _binding: FragmentDoAndroidBinding? = null
     private val binding: FragmentDoAndroidBinding
-        get() = requireNotNull(_binding) { "바인딩 객체가 생성되지 않았다. 생성하고 불러라 임마!" }
+        get() = requireNotNull(_binding) { "바인딩 객체가 생성되지 않았습니다." }
 
     override fun onCreateView(
         inflater: LayoutInflater,
