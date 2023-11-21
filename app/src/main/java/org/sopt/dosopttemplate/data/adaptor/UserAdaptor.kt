@@ -38,7 +38,7 @@ class UserViewHolder(private val binding: ItemFriendBinding) :
         Glide.with(context)
             .load(user.avatar).into(binding.ivItemImage)
 
-        binding.tvItemName.text = user.first_name
+        binding.tvItemName.text = user.firstName
         binding.tvItemMessage.text = user.email
     }
 }
