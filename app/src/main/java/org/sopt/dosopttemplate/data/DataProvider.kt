@@ -1,4 +1,6 @@
-package org.sopt.dosopttemplate
+package org.sopt.dosopttemplate.data
+
+import org.sopt.dosopttemplate.R
 
 object DataProvider {
     fun getMyList(): List<My> {
