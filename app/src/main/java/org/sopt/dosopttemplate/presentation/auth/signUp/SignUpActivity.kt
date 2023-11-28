@@ -1,22 +1,21 @@
-package org.sopt.dosopttemplate.presentation.auth
+package org.sopt.dosopttemplate.presentation.auth.signUp
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import org.sopt.dosopttemplate.databinding.ActivitySignUpBinding
-import org.sopt.dosopttemplate.server.ServicePool.authService
-import org.sopt.dosopttemplate.server.auth.request.RequestSignUpDto
+import org.sopt.dosopttemplate.presentation.auth.login.LoginActivity
 import org.sopt.dosopttemplate.util.makeSnackbar
 import org.sopt.dosopttemplate.util.makeToast
-import retrofit2.Call
-import retrofit2.Response
 import java.util.Calendar
 
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
+    private val signUpViewModel by viewModels<SignUpViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,16 +29,32 @@ class SignUpActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun dateBtnClickListener() {
         binding.ivSignUpDateBtn.setOnClickListener {
-            var calendar = Calendar.getInstance()
-            var year = calendar.get(Calendar.YEAR)
-            var month = calendar.get(Calendar.MONTH)
-            var day = calendar.get(Calendar.DAY_OF_MONTH)
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
 
             val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
                 binding.tvSignUpDate.text =
                     year.toString() + "/" + (month + 1).toString() + "/" + day.toString()
             }, year, month, day)
             datePickerDialog.show()
+        }
+    }
+
+    private fun observeSignUpResult() {
+        signUpViewModel.signUpSuccess.observe(this) {
+            if (it) {
+                binding.root.makeToast("회원가입 성공!")
+                startActivity(
+                    Intent(
+                        this@SignUpActivity,
+                        LoginActivity::class.java
+                    )
+                )
+            } else {
+                binding.root.makeToast("회원가입 실패")
+            }
         }
     }
 
@@ -56,37 +71,14 @@ class SignUpActivity : AppCompatActivity() {
             } else if (signUpName.length in 6..10 && signUpPw.length in 8..12 && signUpNickname.trim()
                     .isNotEmpty() && signUpMbti.length == 4
             ) {
-                authService.signUp(
-                    RequestSignUpDto(
-                        signUpName,
-                        signUpNickname,
-                        signUpPw
-                    )
+                signUpViewModel.signUp(
+                    id = signUpName,
+                    name = signUpNickname,
+                    password = signUpPw,
                 )
-                    .enqueue(object : retrofit2.Callback<Unit> {
-                        override fun onResponse(
-                            call: Call<Unit>,
-                            response: Response<Unit>
-                        ) {
-                            if (response.isSuccessful) {
-                                val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
-                                intent.putExtra("idValue", signUpName)
-                                intent.putExtra("pwValue", signUpPw)
-                                setResult(RESULT_OK, intent)
-                                finish()
-                            } else {
-                                binding.root.makeToast(
-                                    "회원가입에 실패했습니다. ${
-                                        response.errorBody()?.string()
-                                    }"
-                                )
-                            }
-                        }
 
-                        override fun onFailure(call: Call<Unit>, t: Throwable) {
-                            binding.root.makeToast("서버 에러 발생")
-                        }
-                    })
+                observeSignUpResult()
+
             } else {
                 binding.root.makeSnackbar("입력 정보를 다시 확인해 주세요.")
             }
