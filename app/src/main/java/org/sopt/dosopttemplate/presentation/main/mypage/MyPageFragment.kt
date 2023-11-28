@@ -24,9 +24,9 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // 대부분의 로직은 여기에 구현한다.
-        binding.tvProfileIdValue.text = arguments?.getInt("idValue", 0).toString()
-        binding.tvProfileNameValue.text = arguments?.getString("nameValue")
-        binding.tvProfileNicknameValue.text = arguments?.getString("nickNameValue")
+        binding.tvProfileIdValue.text = arguments?.getInt("UserId", 0).toString()
+        binding.tvProfileNameValue.text = arguments?.getString("UserName")
+        binding.tvProfileNicknameValue.text = arguments?.getString("UserNickname")
     }
 
     override fun onDestroyView() {

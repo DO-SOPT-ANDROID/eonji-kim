@@ -12,6 +12,10 @@ import org.sopt.dosopttemplate.presentation.main.mypage.MyPageFragment
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
 
+    private var userId: Int = 0
+    private var userName: String = ""
+    private var userNickname: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -56,16 +60,14 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun receiveLogin(): Fragment {
-        val idValue = intent.getIntExtra("idValue", 0)
-        val nameValue = intent.getStringExtra("nameValue")
-        val nickNameValue = intent.getStringExtra("nickNameValue")
+        getUserData()
 
         val myPageFragment = MyPageFragment()
         val bundle = Bundle()
 
-        bundle.putInt("idValue", idValue)
-        bundle.putString("nameValue", nameValue)
-        bundle.putString("nickNameValue", nickNameValue)
+        bundle.putInt("UserId", userId)
+        bundle.putString("UserName", userName)
+        bundle.putString("UserNickname", userNickname)
 
         myPageFragment.arguments = bundle
         return myPageFragment
@@ -75,5 +77,11 @@ class HomeActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcv_home, fragment)
             .commit()
+    }
+
+    private fun getUserData() {
+        userId = intent.getIntExtra("UserId", 0)
+        userName = intent.getStringExtra("UserName").toString()
+        userNickname = intent.getStringExtra("UserNickname").toString()
     }
 }
