@@ -1,45 +1,37 @@
 package org.sopt.dosopttemplate.presentation.auth.signUp
 
-import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import org.sopt.dosopttemplate.databinding.ActivitySignUpBinding
 import org.sopt.dosopttemplate.presentation.auth.login.LoginActivity
-import org.sopt.dosopttemplate.util.makeSnackbar
 import org.sopt.dosopttemplate.util.makeToast
-import java.util.Calendar
+import java.util.regex.Pattern
 
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
     private val signUpViewModel by viewModels<SignUpViewModel>()
 
+    private var idFlag = false
+    private var pwFlag = false
+    private var nameFlag = false
+    private var mbtiFlag = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        dateBtnClickListener()
+        binding.layoutSignUpId.editText?.addTextChangedListener(idListener)
+        binding.layoutSignUpPw.editText?.addTextChangedListener(pwListener)
+        binding.layoutSignUpName.editText?.addTextChangedListener(nameListener)
+        binding.layoutSignUpMbti.editText?.addTextChangedListener(mbtiListener)
+
         signUpBtnClickListener()
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun dateBtnClickListener() {
-        binding.ivSignUpDateBtn.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-            val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
-                binding.tvSignUpDate.text =
-                    year.toString() + "/" + (month + 1).toString() + "/" + day.toString()
-            }, year, month, day)
-            datePickerDialog.show()
-        }
     }
 
     private fun observeSignUpResult() {
@@ -63,25 +55,161 @@ class SignUpActivity : AppCompatActivity() {
             val signUpName = binding.etSignUpId.text.toString()
             val signUpNickname = binding.etSignUpName.text.toString()
             val signUpPw = binding.etSignUpPw.text.toString()
-            val signUpMbti = binding.etSignUpMbti.text.toString()
-            val signUpBirth = binding.tvSignUpDate.text.toString()
 
-            if (signUpName.isEmpty() || signUpPw.isEmpty() || signUpNickname.isEmpty() || signUpMbti.isEmpty() || signUpBirth.isEmpty()) {
-                binding.root.makeSnackbar("모든 정보를 입력해 주세요.")
-            } else if (signUpName.length in 6..10 && signUpPw.length in 8..12 && signUpNickname.trim()
-                    .isNotEmpty() && signUpMbti.length == 4
-            ) {
-                signUpViewModel.signUp(
-                    id = signUpName,
-                    name = signUpNickname,
-                    password = signUpPw,
-                )
+            signUpViewModel.signUp(
+                id = signUpName,
+                name = signUpNickname,
+                password = signUpPw,
+            )
 
-                observeSignUpResult()
+            observeSignUpResult()
+        }
+    }
 
-            } else {
-                binding.root.makeSnackbar("입력 정보를 다시 확인해 주세요.")
+    fun flagCheck() {
+        binding.btnSignUpSignUp.isEnabled = idFlag && pwFlag && nameFlag && mbtiFlag
+    }
+
+    private val idListener = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            if (s != null) {
+                when {
+                    s.isEmpty() -> {
+                        binding.layoutSignUpId.error = "아이디를 입력해주세요."
+                        idFlag = false
+                    }
+
+                    !checkId(s.toString()) -> {
+                        binding.layoutSignUpId.error = "숫자와 영문자 조합으로 6~10자를 사용해주세요."
+                        idFlag = false
+                    }
+
+                    else -> {
+                        binding.layoutSignUpId.error = null
+                        idFlag = true
+                    }
+                }
+                flagCheck()
             }
         }
+    }
+
+    private val pwListener = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            if (s != null) {
+                when {
+                    s.isEmpty() -> {
+                        binding.layoutSignUpPw.error = "비밀번호를 입력해주세요."
+                        pwFlag = false
+                    }
+
+                    !checkPw(s.toString()) -> {
+                        binding.layoutSignUpPw.error = "숫자, 영문자, 특수문자 조합으로 8~10자를 사용해주세요."
+                        pwFlag = false
+                    }
+
+                    else -> {
+                        binding.layoutSignUpPw.error = null
+                        pwFlag = true
+                    }
+                }
+                flagCheck()
+            }
+        }
+    }
+
+    private val nameListener = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            if (s != null) {
+                when {
+                    s.isEmpty() -> {
+                        binding.layoutSignUpName.error = "닉네임을 입력해주세요."
+                        nameFlag = false
+                    }
+
+                    !checkName(s.toString()) -> {
+                        binding.layoutSignUpName.error = "한 글자 이상 사용해주세요."
+                        nameFlag = false
+                    }
+
+                    else -> {
+                        binding.layoutSignUpName.error = null
+                        nameFlag = true
+                    }
+                }
+                flagCheck()
+            }
+        }
+    }
+
+    private val mbtiListener = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            if (s != null) {
+                when {
+                    s.isEmpty() -> {
+                        binding.layoutSignUpMbti.error = "mbti를 입력해주세요."
+                        mbtiFlag = false
+                    }
+
+                    !checkMbti(s.toString()) -> {
+                        binding.layoutSignUpMbti.error = "영문자 조합으로 네 글자 사용해주세요."
+                        mbtiFlag = false
+                    }
+
+                    else -> {
+                        binding.layoutSignUpMbti.error = null
+                        mbtiFlag = true
+                    }
+                }
+                flagCheck()
+            }
+        }
+    }
+
+    private fun checkId(input: String): Boolean {
+        // 영문, 숫자 포함 6~10글자 이내
+        val pattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d).{6,10}$")
+        return pattern.matcher(input).matches()
+    }
+
+    private fun checkPw(input: String): Boolean {
+        // 영문, 숫자, 특수문자 포함 6~12글자 이내
+        val pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{6,12}$")
+        return pattern.matcher(input).matches()
+    }
+
+    private fun checkName(input: String): Boolean {
+        // 문자 1글자 이상
+        return input.trim().isNotEmpty()
+    }
+
+    private fun checkMbti(input: String): Boolean {
+        // 영문 포함 4글자
+        val pattern = Pattern.compile(".*[a-zA-Z]{4}$")
+        return pattern.matcher(input).matches()
     }
 }
