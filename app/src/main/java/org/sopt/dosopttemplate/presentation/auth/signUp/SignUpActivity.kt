@@ -6,6 +6,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import org.sopt.dosopttemplate.databinding.ActivitySignUpBinding
 import org.sopt.dosopttemplate.presentation.auth.login.LoginActivity
 import org.sopt.dosopttemplate.util.makeToast
@@ -35,17 +37,27 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun observeSignUpResult() {
-        signUpViewModel.signUpSuccess.observe(this) {
-            if (it) {
-                binding.root.makeToast("회원가입 성공!")
-                startActivity(
-                    Intent(
-                        this@SignUpActivity,
-                        LoginActivity::class.java
-                    )
-                )
-            } else {
-                binding.root.makeToast("회원가입 실패")
+        lifecycleScope.launch {
+            signUpViewModel.signUpState.collect { signUpState ->
+                when (signUpState) {
+                    is SignUpState.Success -> {
+                        binding.root.makeToast("회원가입 성공!")
+                        startActivity(
+                            Intent(
+                                this@SignUpActivity,
+                                LoginActivity::class.java
+                            )
+                        )
+                    }
+
+                    is SignUpState.Error -> {
+                        binding.root.makeToast("회원가입 실패")
+                    }
+
+                    is SignUpState.Loading -> {
+                        binding.root.makeToast("회원가입 중")
+                    }
+                }
             }
         }
     }
