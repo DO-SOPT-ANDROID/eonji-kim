@@ -116,7 +116,7 @@ class SignUpActivity : AppCompatActivity() {
                     }
 
                     !checkPw(s.toString()) -> {
-                        binding.layoutSignUpPw.error = "숫자, 영문자, 특수문자 조합으로 8~10자를 사용해주세요."
+                        binding.layoutSignUpPw.error = "숫자, 영문자, 특수문자 조합으로 6~10자를 사용해주세요."
                         pwFlag = false
                     }
 
