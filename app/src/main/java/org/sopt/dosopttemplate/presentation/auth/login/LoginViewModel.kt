@@ -21,7 +21,7 @@ class LoginViewModel : ViewModel() {
                 authService.login(RequestLoginDto(id, password))
             }.onSuccess {
                 if (it.isSuccessful) {
-                    loginResult.value = it.body()
+                    _loginResult.value = it.body()
                     loginSuccess.value = true
                 } else {
                     loginSuccess.value = false
