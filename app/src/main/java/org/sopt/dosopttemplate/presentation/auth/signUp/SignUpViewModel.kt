@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.sopt.dosopttemplate.server.ServicePool.authService
 import org.sopt.dosopttemplate.server.auth.request.RequestSignUpDto
+import java.util.regex.Pattern
 
 class SignUpViewModel : ViewModel() {
     private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Loading)
@@ -23,5 +24,28 @@ class SignUpViewModel : ViewModel() {
                 _signUpState.value = SignUpState.Error
             }
         }
+    }
+
+    fun checkId(input: String): Boolean {
+        // 영문, 숫자 포함 6~10글자 이내
+        val pattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d).{6,10}$")
+        return pattern.matcher(input).matches()
+    }
+
+    fun checkPw(input: String): Boolean {
+        // 영문, 숫자, 특수문자 포함 6~12글자 이내
+        val pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{6,12}$")
+        return pattern.matcher(input).matches()
+    }
+
+    fun checkName(input: String): Boolean {
+        // 문자 1글자 이상
+        return input.trim().isNotEmpty()
+    }
+
+    fun checkMbti(input: String): Boolean {
+        // 영문 포함 4글자
+        val pattern = Pattern.compile(".*[a-zA-Z]{4}$")
+        return pattern.matcher(input).matches()
     }
 }

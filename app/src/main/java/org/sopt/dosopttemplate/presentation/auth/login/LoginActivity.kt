@@ -23,6 +23,7 @@ class LoginActivity : AppCompatActivity() {
 
         signInBtnClickListener()
         loginBtnClickListener()
+        observeLoginResult()
     }
 
     private fun signInBtnClickListener() {
@@ -70,8 +71,6 @@ class LoginActivity : AppCompatActivity() {
                 id = id,
                 password = password,
             )
-
-            observeLoginResult()
         }
     }
 }
