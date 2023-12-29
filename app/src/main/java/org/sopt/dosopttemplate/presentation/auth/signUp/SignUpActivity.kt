@@ -85,7 +85,7 @@ class SignUpActivity : AppCompatActivity() {
                         idFlag = false
                     }
 
-                    !checkId(s.toString()) -> {
+                    !signUpViewModel.checkId(s.toString()) -> {
                         binding.layoutSignUpId.error = "숫자와 영문자 조합으로 6~10자를 사용해주세요."
                         idFlag = false
                     }
@@ -115,7 +115,7 @@ class SignUpActivity : AppCompatActivity() {
                         pwFlag = false
                     }
 
-                    !checkPw(s.toString()) -> {
+                    !signUpViewModel.checkPw(s.toString()) -> {
                         binding.layoutSignUpPw.error = "숫자, 영문자, 특수문자 조합으로 6~10자를 사용해주세요."
                         pwFlag = false
                     }
@@ -145,7 +145,7 @@ class SignUpActivity : AppCompatActivity() {
                         nameFlag = false
                     }
 
-                    !checkName(s.toString()) -> {
+                    !signUpViewModel.checkName(s.toString()) -> {
                         binding.layoutSignUpName.error = "한 글자 이상 사용해주세요."
                         nameFlag = false
                     }
@@ -175,7 +175,7 @@ class SignUpActivity : AppCompatActivity() {
                         mbtiFlag = false
                     }
 
-                    !checkMbti(s.toString()) -> {
+                    !signUpViewModel.checkMbti(s.toString()) -> {
                         binding.layoutSignUpMbti.error = "영문자 조합으로 네 글자 사용해주세요."
                         mbtiFlag = false
                     }
@@ -188,28 +188,5 @@ class SignUpActivity : AppCompatActivity() {
                 flagCheck()
             }
         }
-    }
-
-    private fun checkId(input: String): Boolean {
-        // 영문, 숫자 포함 6~10글자 이내
-        val pattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d).{6,10}$")
-        return pattern.matcher(input).matches()
-    }
-
-    private fun checkPw(input: String): Boolean {
-        // 영문, 숫자, 특수문자 포함 6~12글자 이내
-        val pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{6,12}$")
-        return pattern.matcher(input).matches()
-    }
-
-    private fun checkName(input: String): Boolean {
-        // 문자 1글자 이상
-        return input.trim().isNotEmpty()
-    }
-
-    private fun checkMbti(input: String): Boolean {
-        // 영문 포함 4글자
-        val pattern = Pattern.compile(".*[a-zA-Z]{4}$")
-        return pattern.matcher(input).matches()
     }
 }
