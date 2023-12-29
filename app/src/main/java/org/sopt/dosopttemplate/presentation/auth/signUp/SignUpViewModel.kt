@@ -1,25 +1,27 @@
 package org.sopt.dosopttemplate.presentation.auth.signUp
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.sopt.dosopttemplate.server.ServicePool.authService
 import org.sopt.dosopttemplate.server.auth.request.RequestSignUpDto
 import java.util.regex.Pattern
 
 class SignUpViewModel : ViewModel() {
-    private val _signUpSuccess: MutableLiveData<Boolean> = MutableLiveData()
-    val signUpSuccess: MutableLiveData<Boolean> = _signUpSuccess
+    private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Loading)
+    val signUpState: StateFlow<SignUpState> = _signUpState.asStateFlow()
 
     fun signUp(id: String, name: String, password: String) {
         viewModelScope.launch {
             kotlin.runCatching {
                 authService.signUp(RequestSignUpDto(id, name, password))
             }.onSuccess {
-                signUpSuccess.value = it.isSuccessful
+                _signUpState.value = SignUpState.Success(it.body()!!)
             }.onFailure {
-                // 에러 처리 로직
+                _signUpState.value = SignUpState.Error
             }
         }
     }

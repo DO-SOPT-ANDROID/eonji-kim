@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import org.sopt.dosopttemplate.databinding.ActivityLoginBinding
 import org.sopt.dosopttemplate.presentation.auth.signUp.SignUpActivity
 import org.sopt.dosopttemplate.presentation.main.HomeActivity
@@ -31,21 +33,31 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun observeLoginResult() {
-        loginViewModel.loginSuccess.observe(this) {
-            if (it) {
-                val userId = loginViewModel.loginResult.value?.id
-                val userName = loginViewModel.loginResult.value?.username
-                val userNickname = loginViewModel.loginResult.value?.nickname
-                binding.root.makeToast("로그인 성공! userId: {$userId}")
+        lifecycleScope.launch {
+            loginViewModel.loginState.collect { loginState ->
+                when (loginState) {
+                    is LoginState.Success -> {
+                        val userId = loginState.data.id
+                        val userName = loginState.data.username
+                        val userNickname = loginState.data.nickname
+                        binding.root.makeToast("로그인 성공! userId: {$userId}")
 
-                val intent = Intent(this, HomeActivity::class.java).apply {
-                    putExtra("UserId", userId)
-                    putExtra("UserName", userName)
-                    putExtra("UserNickname", userNickname)
+                        val intent = Intent(this@LoginActivity, HomeActivity::class.java).apply {
+                            putExtra("UserId", userId)
+                            putExtra("UserName", userName)
+                            putExtra("UserNickname", userNickname)
+                        }
+                        startActivity(intent)
+                    }
+
+                    is LoginState.Error -> {
+                        binding.root.makeToast("로그인 실패")
+                    }
+
+                    is LoginState.Loading -> {
+                        binding.root.makeToast("로그인 중")
+                    }
                 }
-                startActivity(intent)
-            } else {
-                binding.root.makeToast("로그인 실패")
             }
         }
     }
