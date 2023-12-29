@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import org.sopt.dosopttemplate.data.adaptor.UserAdaptor
 import org.sopt.dosopttemplate.databinding.FragmentHomeBinding
 import org.sopt.dosopttemplate.util.makeToast
@@ -49,16 +51,21 @@ class HomeFragment : Fragment() {
 
     private fun getUserList() {
         userViewModel.getUserList(2)
-        userViewModel.userSuccess.observe(viewLifecycleOwner) {
-            if (it) {
-                val userList = userViewModel.userResult.value?.data
-                if (userList != null) {
-                    Log.e("서버 통신", "성공")
-
-                    userAdapter.setUserList(userList)
+        lifecycleScope.launch {
+            userViewModel.userState.collect { userState ->
+                when (userState) {
+                    is UserState.Success -> {
+                        val userList = userState.data.data
+                        userAdapter.setUserList(userList)
+                        binding.root.makeToast("유저 서버 통신 성공")
+                    }
+                    is UserState.Error -> {
+                        binding.root.makeToast("유저 받아오기 실패")
+                    }
+                    is UserState.Loading -> {
+                        binding.root.makeToast("유저 받아오는 중")
+                    }
                 }
-            } else {
-                binding.root.makeToast("유저 받아오기 실패")
             }
         }
     }
