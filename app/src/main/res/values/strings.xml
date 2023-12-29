@@ -8,9 +8,7 @@
     <string name="main_welcome">Welcome to SOPT</string>
     <string name="main_sign">회원가입 하기</string>
     <string name="main_sign_up">SIGN UP</string>
-    <string name="sign_up_name_hint">닉네임을 입력해주세요</string>
     <string name="main_mbti">MBTI</string>
-    <string name="sign_up_mbti_hint">MBTI를 입력해주세요</string>
     <string name="main_nickname">닉네임</string>
     <string name="main_name">NAME</string>
     <string name="home_profile_name">이름</string>
