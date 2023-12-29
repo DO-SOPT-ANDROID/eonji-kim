@@ -42,11 +42,20 @@ class UserViewHolder(private val binding: ItemFriendBinding) :
         binding.tvItemMessage.text = user.email
     }
 
+    //기존 뷰들에 없는 새로운 xml 속성을 연결하는 기능 메소드를 가지는 객체
+    //보통 static 메소드를 가진 class로 사용
+    //static 메소드를 가져야하기 때문에 class면 안됨 object로 명시
     companion object {
-        @JvmStatic
-        @BindingAdapter("imageUrl")
+        //객체가 단 한마리 밖에 없는 애 : 싱글턴 패턴!!
+
+
+        @JvmStatic  //static 만드는 어노테이션
+        // 1) 이미지뷰에 새로운 xml 속성 만들기
+        // [속성명 : imageUrl ]
+        @BindingAdapter("imageUrl")  //어노테이션 해독기 필요 - 빌드그래이들에 기능 추가 필요!
         fun loadImage(view: ShapeableImageView, imageUrl: String?) {
             imageUrl?.let {
+                //메소드 명은 내 맘대로 다만! 파라미터 (어떤뷰에 주는지(뷰타입), 어떤 값인지(속성값)) 가 중요!!
                 Glide.with(view.context)
                     .load(it)
                     .into(view)
